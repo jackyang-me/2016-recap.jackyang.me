@@ -9,7 +9,7 @@
     "build": "cross-env NODE_ENV=production webpack --progress --hide-modules"
   },
   "dependencies": {
-    "circle-split": "^0.1.0",
+    "circle-split": "^0.1.1",
     "koa": "^1.2.4",
     "lodash.samplesize": "^4.2.0",
     "lodash.shuffle": "^4.2.0",
