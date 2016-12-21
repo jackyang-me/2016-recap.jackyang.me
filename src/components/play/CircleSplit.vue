@@ -36,7 +36,7 @@
     methods: {
       initCircleSplit () {
         this.$options.circleSplit = new CircleSplit(this.$refs.cs, {
-          minDiameter: 4,
+          minDiameter: 2,
           size: '300',
           imageCenterType: 'contain'
         })
