@@ -1,3 +1,13 @@
+<style>
+  .c-circleSplitWrapper {
+    margin: 10px;
+    padding-top: 10px;
+  }
+  .c-circleSplitWrapper canvas {
+    border-radius: 50%;
+  }
+</style>
+
 <template>
   <div class="c-circleSplitWrapper">
     <div ref="cs"></div>
@@ -37,9 +47,10 @@
       initCircleSplit () {
         this.$options.circleSplit = new CircleSplit(this.$refs.cs, {
           minDiameter: 2,
-          size: '300',
-          imageCenterType: 'contain'
+          size: this.$el.clientWidth,
+          imageCenterType: 'cover'
         })
+        this.$options.circleSplit
       },
       updateImage (image) {
         if (this.$options.circleSplit) {

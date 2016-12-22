@@ -1,8 +1,26 @@
+<style>
+  .c-answerPicker {
+    list-style: none;
+    margin: 0 10px;
+    padding: 0;
+  }
+  .c-answerItem {
+    padding: 10px;
+    margin-bottom: 5px;
+    border: 1px dashed lightgrey;
+  }
+  .c-answerItem.is-selected {
+    background-color: lightseagreen;
+  }
+</style>
+
 <template>
-  <div class="c-answerPicker">
-    <div class="c-answerItem" v-for="item in answers" @click="pickAnswer(item)">
+  <ul class="c-answerPicker">
+    <li v-for="item in answers"
+        :class="{'c-answerItem': true, 'is-selected': selected === item.key}"
+        v-tap="{methods: pickAnswer, item: item}">
       {{item.value}}
-    </div>
+    </li>
   </div>
 </template>
 
@@ -14,20 +32,14 @@
         default () {
           return []
         }
-      }
-    },
-
-    data () {
-      return {
-        selected: null
-      }
+      },
+      selected: [Number, String]
     },
 
     methods: {
-      pickAnswer (item) {
-        this.selected = item.key
-        console.log('picked an answer', item)
-        this.$emit('pick', item)
+      pickAnswer (params) {
+        console.log('tap')
+        this.$emit('pick', params.item)
       }
     }
   }

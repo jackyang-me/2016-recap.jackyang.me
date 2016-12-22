@@ -1,18 +1,31 @@
 import sampleSize from 'lodash.samplesize'
 import shuffle from 'lodash.shuffle'
+import Timer from 'timer.js'
 
 export default class Game {
-  constructor () {
+  constructor (options) {
+    options || (options = {})
     this.questions = [] // id, image, answer, imageLoaded, selection
     this.currentQuestionIndex = -1
-
+    this.totalTime = options.totalTime || 30
     this.timer = null
-
+    this.onTick = options.onTick
+    this.onEnd = options.onEnd
     this._init()
   }
 
   _init () {
+    this._initTimer()
     this._loadQuestions()
+  }
+
+  _initTimer () {
+    let that = this
+    this.timer = new Timer({
+      tick: 1, // 1s
+      ontick (ms) { that.onTick && that.onTick(ms) },
+      onend () { that.onEnd && that.onEnd() }
+    })
   }
 
   _generateRandomAnswers (questionId) {
@@ -54,7 +67,12 @@ export default class Game {
   }
 
   start () {
+    this.timer.start(this.totalTime)
+    this.nextQuestion()
+  }
 
+  pause () {
+    this.timer.pause()
   }
 
   stop () {
@@ -62,8 +80,10 @@ export default class Game {
   }
 
   submitAnswer (key) {
-    let currentQuestion = this.questions[this.currentQuestionIndex]
+    let currentQuestion = this.currentQuestion()
     currentQuestion.selected = key
+
+    console.log(currentQuestion, key)
     if (currentQuestion.selected === currentQuestion.id) {
       console.log('right answer')
     } else {
