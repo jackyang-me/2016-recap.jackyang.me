@@ -1,16 +1,37 @@
 <style>
   .c-circleSplitWrapper {
+    position: relative;
     margin: 10px;
     padding-top: 10px;
   }
-  .c-circleSplitWrapper canvas {
-    border-radius: 50%;
+  .c-circleSplit__originImage {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center center;
+  }
+
+  .fade-enter-active {
+    transition: opacity .5s;
+  }
+  .fade-leave-active {
+    transition: opacity 0;
+  }
+  .fade-enter, .fade-leave-active {
+    opacity: 0
   }
 </style>
 
 <template>
   <div class="c-circleSplitWrapper">
     <div ref="cs"></div>
+    <transition name="fade">
+      <div class="c-circleSplit__originImage" v-show="reveal" :style="{backgroundImage: backgroundImage}" >
+    </transition>
   </div>
 </template>
 
@@ -26,12 +47,19 @@
         default () {
           return {}
         }
-      }
+      },
+      reveal: Boolean
     },
 
     watch: {
       question (value) {
         value && this.updateImage(value.image)
+      }
+    },
+
+    computed: {
+      backgroundImage () {
+        return this.question ? 'url(' + this.question.image + ')' : ''
       }
     },
 

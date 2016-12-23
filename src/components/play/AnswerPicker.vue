@@ -18,7 +18,7 @@
   <ul class="c-answerPicker">
     <li v-for="item in answers"
         :class="{'c-answerItem': true, 'is-selected': selected === item.key}"
-        v-tap="{methods: pickAnswer, item: item}">
+        @click="pickAnswer(item)">
       {{item.value}}
     </li>
   </div>
@@ -37,9 +37,9 @@
     },
 
     methods: {
-      pickAnswer (params) {
-        console.log('tap')
-        this.$emit('pick', params.item)
+      pickAnswer (item) {
+        console.log('tap', item.value)
+        this.$emit('pick', item)
       }
     }
   }

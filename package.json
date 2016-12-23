@@ -5,17 +5,19 @@
   "author": "Jack Yang <ygjack414@hotmail.com>",
   "private": true,
   "scripts": {
-    "dev": "cross-env NODE_ENV=development webpack-dev-server --open --inline --hot --host 192.168.10.105",
+    "dev": "cross-env NODE_ENV=development webpack-dev-server --open --inline --hot --host 192.168.1.2",
     "build": "cross-env NODE_ENV=production webpack --progress --hide-modules"
   },
   "dependencies": {
     "circle-split": "^0.1.3",
     "koa": "^1.2.4",
+    "leancloud-storage": "^1.5.3",
     "lodash.samplesize": "^4.2.0",
     "lodash.shuffle": "^4.2.0",
     "timer.js": "^1.0.4",
     "v-tap": "^2.0.2",
-    "vue": "^2.1.0"
+    "vue": "^2.1.0",
+    "whatwg-fetch": "^2.0.1"
   },
   "devDependencies": {
     "babel-core": "^6.0.0",

@@ -1,3 +1,4 @@
+import 'whatwg-fetch'
 import Vue from 'vue'
 import VueTap from 'v-tap'
 import App from './App.vue'

@@ -1,6 +1,7 @@
 import sampleSize from 'lodash.samplesize'
 import shuffle from 'lodash.shuffle'
 import Timer from 'timer.js'
+import AV from 'leancloud-storage'
 
 export default class Game {
   constructor (options) {
@@ -11,10 +12,16 @@ export default class Game {
     this.timer = null
     this.onTick = options.onTick
     this.onEnd = options.onEnd
+    this.onDataLoaded = options.onDataLoaded
     this._init()
   }
 
   _init () {
+    AV.init({
+      appId: '8F4nNRT9I69fCfcI3plgYFsK-gzGzoHsz',
+      appKey: 'zhOFbNWxHneLcTTHCDLFPY6P'
+    })
+
     this._initTimer()
     this._loadQuestions()
   }
@@ -42,15 +49,22 @@ export default class Game {
 
   _loadQuestions () {
     let questions = []
-    for (let i = 0; i < 10; i++) {
-      questions.push({
-        id: i,
-        image: 'http://ofkyhrvda.bkt.clouddn.com/post/image/o_1b1ivdeus42bp02bsfou1ctc7.png',
-        answer: 'answer for question ' + i
+    let query = new AV.Query('Event')
+
+    query.find().then(events => {
+      events.forEach(event => {
+        questions.push({
+          id: event.id,
+          image: event.get('image'),
+          answer: event.get('title')
+        })
       })
-    }
-    this.questions = shuffle(questions)
-    this._loadImageForNextQuestion()
+
+      this.questions = shuffle(questions)
+      this._loadImageForNextQuestion()
+
+      this.onDataLoaded && this.onDataLoaded()
+    })
   }
 
   _loadImageForNextQuestion () {

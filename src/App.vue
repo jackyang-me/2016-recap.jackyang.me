@@ -6,7 +6,7 @@
   }
   body {
     margin: 0;
-    background: black;
+    background: #efefef;
   }
 </style>
 
