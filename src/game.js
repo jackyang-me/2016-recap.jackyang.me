@@ -1,6 +1,5 @@
 import sampleSize from 'lodash.samplesize'
 import shuffle from 'lodash.shuffle'
-import Timer from 'timer.js'
 import AV from 'leancloud-storage'
 
 export default class Game {
@@ -8,10 +7,6 @@ export default class Game {
     options || (options = {})
     this.questions = [] // id, image, answer, imageLoaded, selection
     this.currentQuestionIndex = -1
-    this.totalTime = options.totalTime || 30
-    this.timer = null
-    this.onTick = options.onTick
-    this.onEnd = options.onEnd
     this.onDataLoaded = options.onDataLoaded
     this._init()
   }
@@ -22,17 +17,7 @@ export default class Game {
       appKey: 'zhOFbNWxHneLcTTHCDLFPY6P'
     })
 
-    this._initTimer()
     this._loadQuestions()
-  }
-
-  _initTimer () {
-    let that = this
-    this.timer = new Timer({
-      tick: 1, // 1s
-      ontick (ms) { that.onTick && that.onTick(ms) },
-      onend () { that.onEnd && that.onEnd() }
-    })
   }
 
   _generateRandomAnswers (questionId) {
@@ -56,11 +41,12 @@ export default class Game {
         questions.push({
           id: event.id,
           image: event.get('image'),
-          answer: event.get('title')
+          answer: event.get('title'),
+          description: event.get('description') || 'test description here'
         })
       })
 
-      this.questions = shuffle(questions)
+      this.questions = shuffle(questions).filter((_, index) => {return index < 20})
       this._loadImageForNextQuestion()
 
       this.onDataLoaded && this.onDataLoaded()
@@ -81,7 +67,6 @@ export default class Game {
   }
 
   start () {
-    this.timer.start(this.totalTime)
     this.nextQuestion()
   }
 
@@ -97,17 +82,15 @@ export default class Game {
     let currentQuestion = this.currentQuestion()
     currentQuestion.selected = key
 
-    console.log(currentQuestion, key)
     if (currentQuestion.selected === currentQuestion.id) {
-      console.log('right answer')
+      return true
     } else {
-      console.log('wrong answer')
+      return false
     }
   }
 
   submitResult () {
     let rightAnswers = this.questions.filter(q => q.id === q.selected).length
-    console.log('right count', rightAnswers)
   }
 
   currentQuestion () {

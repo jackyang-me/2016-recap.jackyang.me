@@ -14,6 +14,7 @@
     "leancloud-storage": "^1.5.3",
     "lodash.samplesize": "^4.2.0",
     "lodash.shuffle": "^4.2.0",
+    "stackblur-canvas": "^1.4.0",
     "timer.js": "^1.0.4",
     "v-tap": "^2.0.2",
     "vue": "^2.1.0",
