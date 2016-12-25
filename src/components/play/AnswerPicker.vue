@@ -8,7 +8,7 @@
     left: 0;
     width: 100%;
     height: auto;
-    margin: 0;
+    margin-top: 10px;
     padding: 0 10px 20px 10px;
     box-sizing: border-box;
     list-style: none;
@@ -16,8 +16,8 @@
     transition: transform .3s ease;
   }
   .c-answerItem {
-    color: rgba(0,0,0,.8);
-    background-color: rgba(255,255,255,.8);
+    color: rgba(255,255,255,.8);
+    background-color: rgba(255,255,255,.3);
     padding: 10px;
     margin-bottom: 2px;
     border-radius: 2px;

@@ -1,8 +1,11 @@
 <style>
   .c-circleSplitWrapper {
     position: relative;
-    margin: 10px;
-    padding-top: 10px;
+    overflow: hidden;
+    background-color: rgba(255,255,255,.3);
+    border-radius: 2px;
+    font-size: 0;
+    box-sizing: border-box;
   }
   .c-circleSplit__originImage {
     position: absolute;
@@ -13,6 +16,7 @@
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center center;
+    border-radius: 2px;
   }
 
   .fade-enter-active {
@@ -28,7 +32,7 @@
 
 <template>
   <div class="c-circleSplitWrapper">
-    <div ref="cs"></div>
+    <div ref="cs" style="margin:10px"></div>
     <transition name="fade">
       <div class="c-circleSplit__originImage" v-show="reveal" :style="{backgroundImage: backgroundImage}" >
     </transition>
@@ -75,7 +79,7 @@
       initCircleSplit () {
         this.$options.circleSplit = new CircleSplit(this.$refs.cs, {
           minDiameter: 4,
-          size: this.$el.clientWidth,
+          size: this.$el.clientWidth - 20,
           imageCenterType: 'cover'
         })
         this.$options.circleSplit

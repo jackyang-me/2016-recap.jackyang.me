@@ -5,7 +5,7 @@
     width: 100%;
     height: 45px;
     line-height: 45px;
-    background-color: rgba(255,255,255,.2);
+    background-color: rgba(255,255,255,.3);
     color: rgba(0,0,0,.8);
     text-align: center;
     z-index: 2;
