@@ -14,7 +14,7 @@
   <div id="app">
     <welcome-page @start="handleStart"></welcome-page>
     <play-page v-if="status === 'start'" @end="handleEnd"></play-page>
-    <end-page v-if="status === 'end'" :result="result"></end-page>
+    <end-page v-if="status === 'end'" :correct-count="correctCount"></end-page>
   </div>
 </template>
 
@@ -32,16 +32,16 @@ export default {
   data () {
     return {
       status: 'end',
-      result: ''
+      correctCount: 0
     }
   },
   methods: {
     handleStart () {
       this.status = 'start'
     },
-    handleEnd (result) {
+    handleEnd (correctCount) {
       this.status = 'end'
-      this.result = result
+      this.correctCount = correctCount
     }
   }
 }

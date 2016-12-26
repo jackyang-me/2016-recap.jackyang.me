@@ -20,20 +20,16 @@
     color: rgba(255,255,255,.8);
     text-decoration: underline;
   }
-  .c-endPage__2016 {
-    
-  }
-  .c-endPage__2017 {
-
-  }
+  .c-endPage__words {}
 </style>
 
 <template>
   <div class="c-endPage">
-    <div class="c-endPage__comment">{{comment || '你的眼睛就是为看马赛克而生的！'}}</div>
-    <h4 class="c-endPage__2016">别了，2016</h4>
-    <p class="c-endPage__2017">期待2017年的精彩</p>
-    <p class="c-endPage__hit">如果觉得有趣，请不忘分享哦</p>
+    <div class="c-endPage__comment">
+      {{result === 'good' ? '厉害了，word哥' : '还需努力啊'}}，你正确“看清”了{{correctCount}}件大事件。{{comment || '你的眼睛就是为看马赛克而生的！'}}
+    </div>
+    <h4 class="c-endPage__words">在过去的一年，你又有多少自己的“大事件”呢？整理2016，只为更好的踏上2017新的旅程。</h4>
+    <p class="c-endPage__hit">如果喜欢，请不忘分享哦</p>
   </div>
 </template>
 
@@ -53,12 +49,21 @@
 
   export default {
     props: {
-      result: String
+      correctCount: Number
     },
+
+    data () {
+      return {
+        showWords: false,
+        showShare: false
+      }
+    },
+
     computed: {
       comment () {
-        if (this.result) {
-          let classification = COMMENTS[this.result]
+        let result = this.correctCount > 10 ? 'good' : 'bad'
+        if (result) {
+          let classification = COMMENTS[result]
           let index = random(0, classification.length - 1)
           return classification[index]
         } else {

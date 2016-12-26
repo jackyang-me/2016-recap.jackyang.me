@@ -123,11 +123,6 @@ export default class Game {
   }
 
   getResult () {
-    let count = this.questions.filter(q => q.id === q.selected).length
-    if (count > this.questions.length / 2) {
-      return 'good'
-    } else {
-      return 'bad'
-    }
+    return this.questions.filter(q => q.id === q.selected).length
   }
 }
