@@ -51,6 +51,13 @@
   .c-playPage__canvasBackground {
     position: absolute;
   }
+
+  .canvasFade-enter-active, .canvasFade-leave-active {
+    transition: opacity 1s;
+  }
+  .canvasFade-enter, .canvasFade-leave-active {
+    opacity: 0
+  }
 </style>
 
 <template>
@@ -63,7 +70,8 @@
       <answer-picker v-if="currentQuestion"
                      :question="currentQuestion"
                      :selected="selected"
-                     @pick="handlePickAnswer"></answer-picker>
+                     @pick="handlePickAnswer"
+                     @next="handleNextQuestion"></answer-picker>
     </div>
     <div class="c-playPage__loading">
     </div>
@@ -71,8 +79,8 @@
       <button @click="handleSubmit" class="c-pageFooter__submit">Submit</button>
     </div>
     <div class="c-playPage__background">
-      <transition name="fade">
-        <canvas class="c-playPage__canvasBackground" ref="backgroundCanvas" :v-show="showBackground"></canvas>
+      <transition name="canvasFade">
+        <canvas class="c-playPage__canvasBackground" ref="backgroundCanvas" v-show="showBackground"></canvas>
       </transition>
     </div>
   </div>
@@ -86,11 +94,12 @@
 
   const gameTotalTime = 60
 
-  function blurImage (imageSrc, targetCanvas, blurRadius, blurAlphaChannel) {
+  function blurImage (imageSrc, targetCanvas, blurRadius, blurAlphaChannel, callback) {
     let image = new Image()
     image.crossOrigin = 'anonymous'
     image.onload = function () {
       let centerIt
+
       stackblur.image(image, targetCanvas, blurRadius, blurAlphaChannel)
       centerIt = new CenterIt({
         containerWidth: window.screen.availWidth,
@@ -99,10 +108,13 @@
         originHeight: targetCanvas.height,
         centerType: 'cover'
       })
+
       targetCanvas.style.width = centerIt.width() + 'px'
       targetCanvas.style.height = centerIt.height() + 'px'
       targetCanvas.style.top = centerIt.offset().top + 'px'
       targetCanvas.style.left = centerIt.offset().left + 'px'
+
+      callback && callback()
     }
     image.src = imageSrc + '?imageView2/2/w/100'
   }
@@ -140,16 +152,14 @@
 
     watch: {
       currentQuestion (value) {
-        console.log('question change', value)
-
-        if (value && value.image) {
-          fetch(value.image + '?imageAve', {method: 'GET'})
+        if (value && value.imageSrc) {
+          fetch(value.imageSrc + '?imageAve', {method: 'GET'})
             .then(response => response.json())
             .then(response => {
               this.backgroundColor = '#' + response.RGB.substring(2)
             })
 
-          this.updateBackgroundCanvas(value.image)
+          this.updateBackgroundCanvas(value.imageSrc)
         }
       }
     },
@@ -159,8 +169,7 @@
 
       game = new Game({
         onDataLoaded () {
-          game.start()
-          that.currentQuestion = game.currentQuestion()
+          that.currentQuestion = game.start()
           that.index ++
           that.total = game.questions.length
         }
@@ -174,15 +183,13 @@
         this.selected = item.key
         this.showOriginImage = true
         game.submitAnswer(this.selected)
-
-        // document.body.scrollTop = 0
-
-        setTimeout(() => {
-          this.currentQuestion = game.nextQuestion()
-          this.selected = null
-          this.showOriginImage = false
-          this.index ++
-        }, 2000)
+      },
+      handleNextQuestion () {
+        this.currentQuestion = game.nextQuestion()
+        this.selected = null
+        this.showOriginImage = false
+        this.showBackground = false
+        this.index ++
       },
       handleSubmit () {
         console.log('submit')
@@ -194,7 +201,9 @@
       },
       updateBackgroundCanvas (imageSrc) {
         let canvas = this.$refs.backgroundCanvas
-        blurImage(imageSrc, canvas, 20, .5)
+        blurImage(imageSrc, canvas, 20, .5, () => {
+          this.showBackground = true
+        })
       }
     }
   }

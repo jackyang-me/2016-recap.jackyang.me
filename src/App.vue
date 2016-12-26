@@ -12,8 +12,8 @@
 
 <template>
   <div id="app">
-    <!--<welcome-page></welcome-page>-->
-    <play-page></play-page>
+    <welcome-page @start="handleStart"></welcome-page>
+    <play-page v-if="start"></play-page>
   </div>
 </template>
 
@@ -25,6 +25,16 @@ export default {
   components: {
     'welcome-page': Welcome,
     'play-page': Play
+  },
+  data () {
+    return {
+      start: false
+    }
+  },
+  methods: {
+    handleStart () {
+      this.start = true
+    }
   }
 }
 </script>

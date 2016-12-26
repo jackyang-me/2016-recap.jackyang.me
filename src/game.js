@@ -5,7 +5,7 @@ import AV from 'leancloud-storage'
 export default class Game {
   constructor (options) {
     options || (options = {})
-    this.questions = [] // id, image, answer, imageLoaded, selection
+    this.questions = [] // id, imageSrc, image, answer, selection, onload
     this.currentQuestionIndex = -1
     this.onDataLoaded = options.onDataLoaded
     this._init()
@@ -40,34 +40,40 @@ export default class Game {
       events.forEach(event => {
         questions.push({
           id: event.id,
-          image: event.get('image'),
+          imageSrc: event.get('image'),
+          image: null,
           answer: event.get('title'),
           description: event.get('description') || 'test description here'
         })
       })
 
       this.questions = shuffle(questions).filter((_, index) => {return index < 20})
-      this._loadImageForNextQuestion()
-
       this.onDataLoaded && this.onDataLoaded()
     })
   }
 
-  _loadImageForNextQuestion () {
-    let nextQuestion = this.questions[this.currentQuestionIndex + 1]
-    let image = null
-
-    if (nextQuestion) {
-      image = new Image()
-      image.onload = function () {
-        nextQuestion.imageLoaded = true
-      }
-      image.src = nextQuestion.image
+  _loadQuestionImage (question) {
+    if (!question.imageSrc) {
+      console.warn('_loadQuestionImage(): there is no image src to load for this question', question)
+      return
     }
+
+    if (question.image) {
+      console.warn('_loadQuestionImage(): question image already loaded', question)
+      return
+    }
+
+    let image = new Image()
+    image.crossOrigin = 'anonymous'
+    image.onload = function () {
+      question.image = image
+      question.onload && question.onload(question)
+    }
+    image.src = question.imageSrc
   }
 
   start () {
-    this.nextQuestion()
+    return this.nextQuestion()
   }
 
   pause () {
@@ -98,13 +104,16 @@ export default class Game {
   }
 
   nextQuestion () {
-    let question = null
+    let question
     if (this.currentQuestionIndex === this.questions.length - 1) {
-      return question
+      return null
     } else {
-      question = this.questions[++this.currentQuestionIndex]
+      this.currentQuestionIndex++
+      question = this.questions[this.currentQuestionIndex]
       question.selection = this._generateRandomAnswers(question.id)
-      this._loadImageForNextQuestion()
+
+      this._loadQuestionImage(question) // load image for current question
+      this._loadQuestionImage(this.questions[this.currentQuestionIndex + 1]) // preload image for next question
       return question
     }
   }

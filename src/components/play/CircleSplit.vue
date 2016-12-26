@@ -55,15 +55,33 @@
       reveal: Boolean
     },
 
+    data () {
+      return {
+        image: null
+      }
+    },
+
     watch: {
       question (value) {
-        value && this.updateImage(value.image)
+        let that = this
+        if (value) {
+          if (value.image) {
+            that.image = value.image
+          } else {
+            value.onload = function (question) {
+              that.image = question.image
+            }
+          }
+        }
+      },
+      image (value) {
+        this.updateImage(value)
       }
     },
 
     computed: {
       backgroundImage () {
-        return this.question ? 'url(' + this.question.image + ')' : ''
+        return this.question ? 'url(' + this.question.imageSrc + ')' : ''
       }
     },
 
