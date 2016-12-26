@@ -12,6 +12,7 @@
     "circle-split": "^0.1.3",
     "koa": "^1.2.4",
     "leancloud-storage": "^1.5.3",
+    "lodash.random": "^3.2.0",
     "lodash.samplesize": "^4.2.0",
     "lodash.shuffle": "^4.2.0",
     "stackblur-canvas": "^1.4.0",

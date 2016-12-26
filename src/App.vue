@@ -13,27 +13,35 @@
 <template>
   <div id="app">
     <welcome-page @start="handleStart"></welcome-page>
-    <play-page v-if="start"></play-page>
+    <play-page v-if="status === 'start'" @end="handleEnd"></play-page>
+    <end-page v-if="status === 'end'" :result="result"></end-page>
   </div>
 </template>
 
 <script>
 import Play from './components/play/Play.vue'
 import Welcome from './components/welcome/Welcome.vue'
+import End from './components/end/End.vue'
 export default {
   name: 'app',
   components: {
     'welcome-page': Welcome,
-    'play-page': Play
+    'play-page': Play,
+    'end-page': End
   },
   data () {
     return {
-      start: false
+      status: 'end',
+      result: ''
     }
   },
   methods: {
     handleStart () {
-      this.start = true
+      this.status = 'start'
+    },
+    handleEnd (result) {
+      this.status = 'end'
+      this.result = result
     }
   }
 }

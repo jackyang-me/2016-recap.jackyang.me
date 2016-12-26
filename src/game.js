@@ -54,12 +54,12 @@ export default class Game {
 
   _loadQuestionImage (question) {
     if (!question.imageSrc) {
-      console.warn('_loadQuestionImage(): there is no image src to load for this question', question)
+      // console.warn('_loadQuestionImage(): there is no image src to load for this question', question)
       return
     }
 
     if (question.image) {
-      console.warn('_loadQuestionImage(): question image already loaded', question)
+      // console.warn('_loadQuestionImage(): question image already loaded', question)
       return
     }
 
@@ -113,8 +113,21 @@ export default class Game {
       question.selection = this._generateRandomAnswers(question.id)
 
       this._loadQuestionImage(question) // load image for current question
-      this._loadQuestionImage(this.questions[this.currentQuestionIndex + 1]) // preload image for next question
+
+      if (this.currentQuestionIndex + 1 < this.questions.length) {
+        this._loadQuestionImage(this.questions[this.currentQuestionIndex + 1]) // preload image for next question
+      }
+
       return question
+    }
+  }
+
+  getResult () {
+    let count = this.questions.filter(q => q.id === q.selected).length
+    if (count > this.questions.length / 2) {
+      return 'good'
+    } else {
+      return 'bad'
     }
   }
 }

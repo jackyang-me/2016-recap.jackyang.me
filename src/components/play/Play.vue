@@ -185,7 +185,13 @@
         game.submitAnswer(this.selected)
       },
       handleNextQuestion () {
-        this.currentQuestion = game.nextQuestion()
+        let question = game.nextQuestion()
+
+        if (!question) {
+          this.$emit('end', game.getResult())
+        }
+
+        this.currentQuestion = question
         this.selected = null
         this.showOriginImage = false
         this.showBackground = false
