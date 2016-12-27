@@ -2,6 +2,9 @@ import sampleSize from 'lodash.samplesize'
 import shuffle from 'lodash.shuffle'
 import AV from 'leancloud-storage'
 
+let Log
+let startedTime
+
 export default class Game {
   constructor (options) {
     options || (options = {})
@@ -17,7 +20,18 @@ export default class Game {
       appKey: 'zhOFbNWxHneLcTTHCDLFPY6P'
     })
 
+    Log = AV.Object.extend('Log')
     this._loadQuestions()
+    this._log('start')
+  }
+
+  _log (action) {
+    let log = new Log
+    log.set('action', action)
+    if (action === 'end') {
+      log.set('stayDuration', Math.floor((Date.now() - startedTime) / 1000))
+    }
+    log.save()
   }
 
   _generateRandomAnswers (questionId) {
@@ -73,6 +87,7 @@ export default class Game {
   }
 
   start () {
+    startedTime = new Date()
     return this.nextQuestion()
   }
 
@@ -123,6 +138,7 @@ export default class Game {
   }
 
   getResult () {
+    this._log('end')
     return this.questions.filter(q => q.id === q.selected).length
   }
 }
