@@ -31,6 +31,7 @@
     margin: 0 0 10px 0;
     font-size: 14px;
     font-weight: 100;
+    color: rgba(255,255,255,.9);
   }
   .c-answerResult__summary {
     background-color: #fff;
