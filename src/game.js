@@ -61,7 +61,7 @@ export default class Game {
         })
       })
 
-      this.questions = shuffle(questions).filter((_, index) => {return index < 20})
+      this.questions = shuffle(questions).filter((_, index) => {return index < 10})
       this.onDataLoaded && this.onDataLoaded()
     })
   }

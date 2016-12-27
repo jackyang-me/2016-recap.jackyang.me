@@ -87,7 +87,7 @@
 
     computed: {
       comment () {
-        let result = this.result = this.correctCount > 10 ? 'good' : 'bad'
+        let result = this.result = this.correctCount > 5 ? 'good' : 'bad'
         if (result) {
           let classification = COMMENTS[result]
           let index = random(0, classification.length - 1)
