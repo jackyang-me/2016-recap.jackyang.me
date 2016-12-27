@@ -20,16 +20,39 @@
     color: rgba(255,255,255,.8);
     text-decoration: underline;
   }
-  .c-endPage__words {}
+  .c-endPage__words {
+    position: absolute;
+    top: 40%;
+    margin: 0 20px;
+    text-align: center;
+    color: rgba(255,255,255,.9);
+    line-height: 1.5;
+  }
+
+  .slideUpIn-enter-active, .slideUpIn-leave-active {
+    transform: translateY(0);
+    opacity: 1;
+    transition: all 1s ease;
+  }
+  .slideUpIn-enter, .slideUpIn-leave-active {
+    transform: translateY(60%);
+    opacity: 0
+  }
 </style>
 
 <template>
   <div class="c-endPage">
-    <div class="c-endPage__comment">
-      {{result === 'good' ? '厉害了，word哥' : '还需努力啊'}}，你正确“看清”了{{correctCount}}件大事件。{{comment || '你的眼睛就是为看马赛克而生的！'}}
-    </div>
-    <h4 class="c-endPage__words">在过去的一年，你又有多少自己的“大事件”呢？整理2016，只为更好的踏上2017新的旅程。</h4>
-    <p class="c-endPage__hit">如果喜欢，请不忘分享哦</p>
+    <transition name="fade">
+      <div class="c-endPage__comment" v-show="showComment">
+        {{result === 'good' ? '厉害了，word哥' : '还需努力啊'}}，你一共“看清”了{{correctCount}}件大事件。{{comment}}
+      </div>
+    </transition>
+    <transition name="slideUpIn">
+      <h4 class="c-endPage__words" v-show="showWords">在过去的一年，你又有多少自己的“大事件”呢？整理2016，只为更好的踏上2017新的旅程</h4>
+    </transition>
+    <transition name="fade">
+      <p class="c-endPage__hit" v-show="showShare">如果喜欢，请不忘分享哦</p>
+    </transition>
   </div>
 </template>
 
@@ -55,13 +78,15 @@
     data () {
       return {
         showWords: false,
-        showShare: false
+        showShare: false,
+        showComment: false,
+        result: ''
       }
     },
 
     computed: {
       comment () {
-        let result = this.correctCount > 10 ? 'good' : 'bad'
+        let result = this.result = this.correctCount > 10 ? 'good' : 'bad'
         if (result) {
           let classification = COMMENTS[result]
           let index = random(0, classification.length - 1)
@@ -70,6 +95,12 @@
           return ''
         }
       }
+    },
+
+    mounted () {
+      setTimeout(() => this.showWords = true, 1000)
+      setTimeout(() => this.showShare = true, 500)
+      setTimeout(() => this.showComment = true, 500)
     }
   }
 </script>

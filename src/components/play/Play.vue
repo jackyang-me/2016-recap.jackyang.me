@@ -51,6 +51,14 @@
   .c-playPage__canvasBackground {
     position: absolute;
   }
+  .c-playPage__blackMask {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,.4);
+  }
 
   .canvasFade-enter-active, .canvasFade-leave-active {
     transition: opacity 1s;
@@ -82,6 +90,7 @@
       <transition name="canvasFade">
         <canvas class="c-playPage__canvasBackground" ref="backgroundCanvas" v-show="showBackground"></canvas>
       </transition>
+      <div class="c-playPage__blackMask"></div>
     </div>
   </div>
 </template>

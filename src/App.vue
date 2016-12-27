@@ -31,7 +31,7 @@ export default {
   },
   data () {
     return {
-      status: 'end',
+      status: '',
       correctCount: 0
     }
   },
