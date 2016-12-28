@@ -36,7 +36,7 @@ export default class Game {
 
   _generateRandomAnswers (questionId) {
     let targetAnswer = this.questions.filter(q => q.id === questionId)[0]
-    let answers = sampleSize(this.questions.filter(q => q.id !== questionId), 3) // random picker other 3 answers
+    let answers = sampleSize(this.allQuestions.filter(q => q.id !== questionId), 3) // random picker other 3 answers
     answers.push(targetAnswer)
     return shuffle(answers.map(a => {
       return {
@@ -61,6 +61,7 @@ export default class Game {
         })
       })
 
+      this.allQuestions = questions;
       this.questions = shuffle(questions).filter((_, index) => {return index < 10})
       this.onDataLoaded && this.onDataLoaded()
     })
