@@ -1,5 +1,5 @@
 {
-  "name": "split-game",
+  "name": "2016-recap.jackyang.me",
   "description": "A Vue.js project",
   "version": "1.0.0",
   "author": "Jack Yang <ygjack414@hotmail.com>",
@@ -10,7 +10,6 @@
   },
   "dependencies": {
     "circle-split": "^0.1.3",
-    "koa": "^1.2.4",
     "leancloud-storage": "^1.5.3",
     "lodash.random": "^3.2.0",
     "lodash.samplesize": "^4.2.0",
@@ -30,7 +29,7 @@
     "file-loader": "^0.9.0",
     "vue-loader": "^10.0.0",
     "vue-template-compiler": "^2.1.0",
-    "webpack": "^2.1.0-beta.25",
+    "webpack": "^2.6.1",
     "webpack-dev-server": "^2.1.0-beta.9"
   }
 }

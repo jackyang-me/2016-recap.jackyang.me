@@ -34,7 +34,7 @@
   <div class="c-circleSplitWrapper">
     <div ref="cs" style="margin:10px"></div>
     <transition name="fade">
-      <div class="c-circleSplit__originImage" v-show="reveal" :style="{backgroundImage: backgroundImage}" >
+      <div class="c-circleSplit__originImage" v-show="reveal" :style="{backgroundImage: backgroundImage}"></div>
     </transition>
   </div>
 </template>
